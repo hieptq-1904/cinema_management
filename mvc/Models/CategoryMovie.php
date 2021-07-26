@@ -1,4 +1,5 @@
 <?php
+namespace mvc\Models;
 
 class CategoryMovie{
     public $id;

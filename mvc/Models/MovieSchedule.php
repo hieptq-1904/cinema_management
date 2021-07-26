@@ -9,7 +9,7 @@ class MovieSchedule{
     public $movie_id;
     public $room_id;
     public Room $room;
-    public Moviegit  $movie;
+    public Movie  $movie;
 
     public function __construct($id, $time, $date, $movie_id, $room_id)
     {

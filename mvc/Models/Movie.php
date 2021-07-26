@@ -1,5 +1,6 @@
 <?php
 namespace mvc\Models;
+
 use mvc\Models\User;
 
 class Movie{
