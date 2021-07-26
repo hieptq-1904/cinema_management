@@ -1,5 +1,7 @@
 <?php
-class UserModel{
+namespace mvc\Models;
+
+class Users{
     public $id;
     public $name;
     public $address;
@@ -7,6 +9,7 @@ class UserModel{
     public $phone;
     public $username;
     public $password;
+    public Array $movies;
 
     public function __construct($id, $name, $address, $email, $phone, $username, $password){
         $this->id = $id;

@@ -1,8 +1,11 @@
 <?php
-class CategoriesModel{
+namespace mvc\Models;
+
+class Categories{
     public $id;
     public $name;
     public $description;
+    public Array $categories;
 
     public function __construct($id, $name, $description)
     {
