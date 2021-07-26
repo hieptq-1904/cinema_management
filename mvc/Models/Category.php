@@ -1,11 +1,11 @@
 <?php
 namespace mvc\Models;
 
-class Categories{
+class Category{
     public $id;
     public $name;
     public $description;
-    public Array $categories;
+    public Array $movies;
 
     public function __construct($id, $name, $description)
     {

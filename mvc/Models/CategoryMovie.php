@@ -1,13 +1,9 @@
 <?php
-use mvc\Models\Categories;
-use mvc\Models\Movies;
 
 class CategoryMovie{
     public $id;
     public $movie_id;
     public $category_id;
-    public Categories  $category;
-    public Movies $movie;
 
     public function __construct($id, $movie_id, $category_id)
     {

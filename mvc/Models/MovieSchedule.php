@@ -1,6 +1,6 @@
 <?php
-use mvc\Models\Movies;
-use mvc\Models\Rooms;
+use mvc\Models\Movie;
+use mvc\Models\Room;
 
 class MovieSchedule{
     public $id;
@@ -8,8 +8,8 @@ class MovieSchedule{
     public $date;
     public $movie_id;
     public $room_id;
-    public Rooms $room;
-    public Movies $movie;
+    public Room $room;
+    public Moviegit  $movie;
 
     public function __construct($id, $time, $date, $movie_id, $room_id)
     {

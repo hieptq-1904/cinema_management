@@ -1,7 +1,7 @@
 <?php
 namespace mvc\Models;
 
-class Users{
+class User{
     public $id;
     public $name;
     public $address;
