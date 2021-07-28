@@ -8,7 +8,10 @@
 </head>
 <body id="page-top">
 
-        <?php
-            include_once "layout/Sidebar.php";
-        ?>
+    <?php
+    include_once "layout/Sidebar.php";
+    ?>
+    <?php
+    include_once "layout/script.php";
+    ?>
 </body>
