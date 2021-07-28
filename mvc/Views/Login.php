@@ -60,16 +60,10 @@
     </div>
 </div>
 
-<!-- Bootstrap core JavaScript-->
-<script src="../cinema_management/public/vendor/jquery/jquery.min.js"></script>
-<script src="../cinema_management/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<?php
 
-<!-- Core plugin JavaScript-->
-<script src="../cinema_management/public/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="../cinema_management/public/js/sb-admin-2.min.js"></script>
-
+include_once "layout/script.php";
+?>
 </body>
 
 </html>
