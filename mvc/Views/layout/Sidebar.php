@@ -1,6 +1,4 @@
-
-<body id="page-top">
-    <!-- Page Wrapper -->
+<!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -238,4 +236,3 @@
                 <!-- End of Topbar -->
     </div>
 
-</body>
