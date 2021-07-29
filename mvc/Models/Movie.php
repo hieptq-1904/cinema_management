@@ -12,7 +12,7 @@ class Movie{
     public $user_id;
     public User $user;
     public Array $categories;
-    public Array $movies;
+    public Array $movies_schedules;
 
     public function __construct($id, $movie_name, $description, $image,$time, $user_id){
         $this->id = $id;
