@@ -1,26 +1,6 @@
 <?php
     include '../Controllers/Login.php';
 ?>
-<?php
-//    $class= new Login();
-//    if($_SERVER['REQUEST_METHOD']=='POST'){
-//        $username = $_POST['username'];
-//        $password = md5($_POST['password']);
-//        echo $username . $password;
-//        $login_check = $class->login($username, $password);
-//    }
-//
-//$class = new Login();
-//if (isset($_POST['btn_login'])) {
-//    $username = $_POST['username'];
-//    $password = md5($_POST['password']);
-//    echo $username . $password;
-//    //$login_check = $class->login($username, $password);
-//}
-//
-//?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

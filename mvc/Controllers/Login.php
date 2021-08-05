@@ -26,7 +26,7 @@ class Login
             $user = $db->checkLogin($username, $password);
             $db->closeDb();
             if($user){
-                $_SESSION['user_id'] = [$user];
+                $_SESSION['user_id'] = $user;
                 header('location: home');
             }else{
                 $_SESSION['errors'] = ["Incorrect account!"];
