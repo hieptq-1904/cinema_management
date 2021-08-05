@@ -21,7 +21,7 @@
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                         </div>
-                        <form class="user">
+                        <form class="user" action="" method="post">
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <input type="text" class="form-control form-control-user" id="exampleFirstName"
@@ -54,13 +54,12 @@
                                            id="exampleRepeatPassword" placeholder="Repeat Password">
                                 </div>
                             </div>
-                            <a href="login.html" class="btn btn-primary btn-user btn-block">
-                                Register Account
-                            </a>
+                            <button class="btn btn-primary btn-user btn-block" type="submit" name="btn_register">
+                                Register Account</button>
                         </form>
                         <hr>
                         <div class="text-center">
-                            <a class="small" href="login.html">Already have an account? Login!</a>
+                            <a class="small" href="login">Already have an account? Login!</a>
                         </div>
                     </div>
                 </div>

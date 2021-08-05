@@ -1,26 +1,67 @@
 <?php
+require_once 'mvc/Controllers/Login.php';
+include_once 'mvc/Controllers/Homepage.php';
+include 'mvc/Controllers/Register.php';
+use mvc\Controllers\Login;
+use mvc\Controllers\Homepage;
+use mvc\Controllers\Register;
 
-switch ($_SERVER['REQUEST_URI']){
+session_start();
+$method = $_SERVER['REQUEST_METHOD'];
+
+    switch ($_SERVER['REQUEST_URI']){
     case '/cinema_management/login':
-        include 'mvc/Controllers/Login.php';
-        $loginController = new Login();
-        $loginController ->login();
+
+        if ($method === 'GET') {
+
+            if (isset($_SESSION['user_id'])) {
+                header('Location: home');
+            } else {
+                $login = new Login();
+                $login->getLoginView();
+            }
+        } elseif ($method === 'POST') {
+            $loginController = new Login();
+            $loginController->postLogin();
+        } else {
+            echo('404 NOT FOUND');
+            die();
+        }
         break;
     case '/cinema_management/register':
-        include 'mvc/Controllers/Register.php';
-        $homeController = new Register();
-        $homeController->register();
+        if($method === 'GET'){
+            $register = new Register();
+            $register->getRegister();
+        }elseif ($method === 'POST'){
+            $registerController = new Register();
+            $registerController->postRegister();
+        }else{
+            echo('404 NOT FOUND');
+            die();
+        }
+        break;
+
+    case '/cinema_management/home':
+        if ($method === 'GET') {
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: login');
+            } else{
+                $home = new Homepage();
+                $home->getHomePage();
+            }
+        }else{
+            echo('404 NOT FOUND');
+            die();
+        }
         break;
     case '/cinema_management/':
-        include 'mvc/Controllers/Homepage.php';
-        $homeController = new Homepage();
-        $homeController->home();
+        header('location: home');
         break;
+
     default:
         if (substr($_SERVER['REQUEST_URI'], 0, 7) !== '/public'){
             echo('404 NOT FOUND');
             die();
         }
         break;
-
 }
