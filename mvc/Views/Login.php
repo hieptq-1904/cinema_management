@@ -1,3 +1,26 @@
+<?php
+    include '../Controllers/Login.php';
+?>
+<?php
+//    $class= new Login();
+//    if($_SERVER['REQUEST_METHOD']=='POST'){
+//        $username = $_POST['username'];
+//        $password = md5($_POST['password']);
+//        echo $username . $password;
+//        $login_check = $class->login($username, $password);
+//    }
+//
+//$class = new Login();
+//if (isset($_POST['btn_login'])) {
+//    $username = $_POST['username'];
+//    $password = md5($_POST['password']);
+//    echo $username . $password;
+//    //$login_check = $class->login($username, $password);
+//}
+//
+//?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,15 +49,19 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
-                                <form class="user">
+                                <span style="color: red"><?php
+                                    echo $_SESSION['errors'][0];
+                                    unset($_SESSION['errors']);
+                                     ?></span>
+                                <form class="user" action="" method="post">
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
-                                               id="exampleInputEmail" aria-describedby="emailHelp"
+                                        <input type="text" class="form-control form-control-user"
+                                               name="username" aria-describedby="emailHelp"
                                                placeholder="Enter Username...">
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control form-control-user"
-                                               id="exampleInputPassword" placeholder="Password">
+                                               name="password" placeholder="Password">
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox small">
@@ -43,13 +70,13 @@
                                                 Me</label>
                                         </div>
                                     </div>
-                                    <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                    <button  class="btn btn-primary btn-user btn-block" name="btn_login" type="submit">
                                         Login
-                                    </a>
+                                    </button>
                                 </form>
                                 <hr>
                                 <div class="text-center">
-                                    <a class="small" href="register.php">Create an Account!</a>
+                                    <a class="small" href="">Create an Account!</a>
                                 </div>
                             </div>
                         </div>
