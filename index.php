@@ -1,7 +1,10 @@
 <?php
 require_once 'mvc/Controllers/Login.php';
 include_once 'mvc/Controllers/Homepage.php';
+include 'mvc/Controllers/Register.php';
 use mvc\Controllers\Login;
+use mvc\Controllers\Homepage;
+use mvc\Controllers\Register;
 
 session_start();
 $method = $_SERVER['REQUEST_METHOD'];
@@ -24,22 +27,26 @@ $method = $_SERVER['REQUEST_METHOD'];
             echo('404 NOT FOUND');
             die();
         }
-
         break;
     case '/cinema_management/register':
-        include 'mvc/Controllers/Register.php';
-        $homeController = new Register();
-        $homeController->register();
+
+        $register = new Register();
+        $register->register();
         break;
     case '/cinema_management/home':
         if ($method === 'GET') {
             if (!isset($_SESSION['user_id'])) {
                 header('Location: login');
             } else{
-                require_once 'mvc/Controllers/Homepage.php';
                 $home = new Homepage();
                 $home->getHomePage();
             }
+        }elseif($method === 'POST'){
+            $homeController = new Homepage();
+            $homeController ->postHomepage();
+        }else{
+            echo('404 NOT FOUND');
+            die();
         }
         break;
     case '/cinema_management/':

@@ -1,5 +1,5 @@
 <?php
-
+namespace mvc\Controllers;
 
 class Register
 {

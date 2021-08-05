@@ -19,7 +19,7 @@ class Login
     public function postLogin()
     {
         $db = new DB();
-        if(isset($_POST['btn_login']) && $_POST['username']!= ' ' && $_POST['password'] != ' '){
+        if(isset($_POST['btn_login']) && $_POST['username'] != '' && $_POST['password'] != '' ){
             $username = $_POST['username'];
             $password = $_POST['password'];
             $password = md5($password);
@@ -32,7 +32,7 @@ class Login
                 $_SESSION['errors'] = ["Incorrect account!"];
                 header('location: login');
             }
-        }if(isset($_POST['btn_login']) || $_POST['username'] == ' ' || $_POST['password'] == ' '){
+        }else{
             $_SESSION['errors'] = ['Username or password cannot be empty!'];
             header('location: login');
         }

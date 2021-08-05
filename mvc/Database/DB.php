@@ -23,7 +23,10 @@ class DB
         $result = mysqli_query($this->conn,$sql);
         if(mysqli_num_rows($result) > 0) {
             $row= $result->fetch_assoc();
-            return $row;
+            $user = $row['id'];
+            return $user;
+        }else{
+            return false;
         }
     }
 
