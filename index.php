@@ -29,10 +29,18 @@ $method = $_SERVER['REQUEST_METHOD'];
         }
         break;
     case '/cinema_management/register':
-
-        $register = new Register();
-        $register->register();
+        if($method === 'GET'){
+            $register = new Register();
+            $register->getRegister();
+        }elseif ($method === 'POST'){
+            $registerController = new Register();
+            $registerController->postRegister();
+        }else{
+            echo('404 NOT FOUND');
+            die();
+        }
         break;
+
     case '/cinema_management/home':
         if ($method === 'GET') {
             if (!isset($_SESSION['user_id'])) {
@@ -41,9 +49,6 @@ $method = $_SERVER['REQUEST_METHOD'];
                 $home = new Homepage();
                 $home->getHomePage();
             }
-        }elseif($method === 'POST'){
-            $homeController = new Homepage();
-            $homeController ->postHomepage();
         }else{
             echo('404 NOT FOUND');
             die();

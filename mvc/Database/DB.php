@@ -30,7 +30,6 @@ class DB
         }
     }
 
-
     public function closeDb(){
         return $this->conn->close();
     }

@@ -3,8 +3,10 @@ namespace mvc\Controllers;
 
 class Register
 {
-    public function register(){
+    public function getRegister(){
         require_once 'mvc/Views/Register.php';
+    }
+    public function postRegister(){
 
     }
 }
