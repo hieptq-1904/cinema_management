@@ -27,18 +27,20 @@ class Register
             $address = $_POST['address'];
             $phone = $_POST['phone'];
             $email = $_POST['email'];
-            $register = $db->checkRegister($username, $email, $password, $name, $phone, $address);
-            $db->closeDb();
             if($password != $repassword){
                 $_SESSION['errors'] = ['Password do not match!'];
                 header('location: register');
-            }elseif($register ){
+            }else{
+            $register = $db->checkRegister($username, $email, $password, $name, $phone, $address);
+            $db->closeDb();
+            if($register ){
                 header('location: login');
             }else{
                 $_SESSION['errors'] = ['Email or username already existed !'];
                 header('location: register');
             }
         }
+    }
         else{
             $_SESSION['errors'] = ['Fields must be not empty!'];
             header('location: register');
