@@ -33,6 +33,10 @@
                                     echo $_SESSION['errors'][0];
                                     unset($_SESSION['errors']);
                                      ?></span>
+                                <span style="color: green"><?php
+                                    echo $_SESSION['message'][0];
+                                    unset($_SESSION['message']);
+                                    ?></span>
                                 <form class="user" action="" method="post">
                                     <div class="form-group">
                                         <input type="text" class="form-control form-control-user"

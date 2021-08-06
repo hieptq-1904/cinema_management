@@ -30,6 +30,19 @@ class DB
         }
     }
 
+    public function checkRegister($username, $email, $password, $name, $phone, $address){
+        $sql = "SELECT * FROM users WHERE username = '$username' OR email = '$email' LIMIT 1";
+        $result = mysqli_query($this->conn,$sql);
+        if(mysqli_num_rows($result) <= 0){
+            $sql = "INSERT INTO users (username, password, name, email, phone, address ) 
+                    VALUE ('$username', '$password', '$name', '$email', '$phone', '$address')";
+            mysqli_query($this->conn,$sql);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function closeDb(){
         return $this->conn->close();
     }
