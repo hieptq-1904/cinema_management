@@ -21,8 +21,6 @@ class Register
             $username = $_POST['username'];
             $password = $_POST['password'];
             $repassword = $_POST['repassword'];
-            $password = md5($password);
-            $repassword = md5($repassword);
             $name = $_POST['name'];
             $address = $_POST['address'];
             $phone = $_POST['phone'];
@@ -31,13 +29,15 @@ class Register
                 $_SESSION['errors'] = ['Password do not match!'];
                 header('location: register');
             }else{
-            $register = $db->checkRegister($username, $email, $password, $name, $phone, $address);
-            $db->closeDb();
-            if($register ){
-                header('location: login');
-            }else{
-                $_SESSION['errors'] = ['Email or username already existed !'];
-                header('location: register');
+                $password = md5($password);
+                $register = $db->checkRegister($username, $email, $password, $name, $phone, $address);
+                $db->closeDb();
+                if($register ){
+                    $_SESSION['message'] = ['Register successfully !'];
+                    header('location: login' );
+                }else{
+                    $_SESSION['errors'] = ['Email or username already existed !'];
+                    header('location: register');
             }
         }
     }
