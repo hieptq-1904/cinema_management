@@ -1,6 +1,11 @@
 <?php
 namespace mvc\Database;
+use mvc\Models\CategoryMovie;
 use mysqli;
+use mvc\Models\Movie;
+use mvc\Models\Category;
+require_once 'mvc/Models/Movie.php';
+require_once 'mvc/Models/Category.php';
 
 class DB
 {
@@ -35,13 +40,54 @@ class DB
         $result = mysqli_query($this->conn,$sql);
         if(mysqli_num_rows($result) <= 0){
             $sql = "INSERT INTO users (username, password, name, email, phone, address ) 
-                    VALUE ('$username', '$password', '$name', '$email', '$phone', '$address')";
+                    VALUES ('$username', '$password', '$name', '$email', '$phone', '$address')";
             mysqli_query($this->conn,$sql);
             return true;
         }else{
             return false;
         }
     }
+    public function showMovie(){
+        $sql = "SELECT * FROM movies ";
+        $result = mysqli_query($this->conn,$sql);
+        $list = [];
+        if(mysqli_num_rows($result) > 0){
+            while ($row = $result->fetch_assoc()){
+                $movie = new Movie($row['id'], $row['movie_name'], $row['description'], $row['image'],$row['time'],
+                    $row['user_id']);
+                array_push($list, $movie);
+            }
+            return $list;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    public function addMovie($name_category,$movie_name,$description,$image,$time){
+        $user_id = $_SESSION['user_id'];
+        $sql_category = "SELECT id FROM categories WHERE name = '$name_category'";
+        $result= $this->conn->query($sql_category);
+        if($result->num_rows >0){
+            $category_id = $result->fetch_assoc();
+            $id_cate = reset($category_id);
+        }
+        $sql_movie = "INSERT INTO movies(movie_name, description, image, time, user_id) 
+                        VALUES ('$movie_name', '$description', '$image', '$time', '$user_id')";
+        if ($this->conn->query($sql_movie) === TRUE) {
+            $movie_id = $this->conn->insert_id;;
+            $sql_cate = "INSERT INTO category_movie(movie_id, category_id) VALUES ('$movie_id', '$id_cate')";
+            if($this->conn->query($sql_cate) === TRUE){
+                return true;
+            }
+        }else {
+            return false;
+        }
+    }
+
+
+
 
     public function closeDb(){
         return $this->conn->close();
