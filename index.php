@@ -64,8 +64,12 @@ $method = $_SERVER['REQUEST_METHOD'];
         break;
     case '/cinema_management/listmovie':
         if($method === 'GET'){
-            $list = new ListMovie();
-            $list->getListMovie();
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: login');
+            } else{
+                $list = new ListMovie();
+                $list->getListMovie();
+            }
         }else{
             echo('404 NOT FOUND');
             die();
@@ -73,8 +77,12 @@ $method = $_SERVER['REQUEST_METHOD'];
         break;
     case '/cinema_management/addmovie':
         if($method === 'GET'){
-            $add = new AddMovie();
-            $add->getAddMovie();
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: login');
+            } else{
+                $add = new AddMovie();
+                $add->getAddMovie();
+            }
         }elseif($method === 'POST'){
             $addMovie = new AddMovie();
             $addMovie ->postAddMovie();

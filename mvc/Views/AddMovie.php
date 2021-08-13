@@ -41,14 +41,16 @@ include_once "layout/Sidebar.php";
                             </div>
                             <div class="form-group">
                                 <label for="">Categories: </label>
-                                <select name="category" id="input" class="form-control" required="required">
-                                    <option value="Action" >Action</option>
-                                    <option value="Romantic">Romantic</option>
-                                    <option value="Science fiction">Science fiction</option>
-                                    <option value="Horror">Horror</option>
-                                    <option value="Cartoon">Cartoon</option>
-                                    <option value="Historical ">Historical </option>
-                                    <option value="Comedy">Comedy</option>
+                                <select name="category_id" id="input" class="form-control" required="required">
+
+                                <?php
+                                $db = new DB();
+                                $listcate = $db->showCategory();
+                                $db->closeDb();
+                                foreach ($listcate as $category ){?>
+                                    <option value="<?php echo $category->id?>"><?php echo $category->name?></option>
+                                <?php } ?>
+
                                 </select>
                             </div>
                             <div class="form-group">

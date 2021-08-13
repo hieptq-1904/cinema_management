@@ -64,10 +64,25 @@ class DB
         }
 
     }
+        public function showCategory(){
+        $sql = "SELECT * FROM categories";
+        $result = mysqli_query($this->conn,$sql);
+        $list = [];
+        if(mysqli_num_rows($result) >0){
+            while ($row = $result->fetch_assoc()){
+                $category = new Category($row['id'], $row['name'], $row['description'] );
+                array_push($list,$category);
+            }
+            return $list;
+        }else{
+            return false;
+        }
+    }
 
-    public function addMovie($name_category,$movie_name,$description,$image,$time){
+
+    public function addMovie($id_category,$movie_name,$description,$image,$time){
         $user_id = $_SESSION['user_id'];
-        $sql_category = "SELECT id FROM categories WHERE name = '$name_category'";
+        $sql_category = "SELECT id FROM categories WHERE id = '$id_category'";
         $result= $this->conn->query($sql_category);
         if($result->num_rows >0){
             $category_id = $result->fetch_assoc();
