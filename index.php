@@ -2,11 +2,16 @@
 require_once 'mvc/Controllers/Login.php';
 include_once 'mvc/Controllers/Homepage.php';
 include 'mvc/Controllers/Register.php';
+include_once 'mvc/Controllers/ListMovie.php';
+include_once 'mvc/Controllers/AddMovie.php';
+
+use mvc\Controllers\AddMovie;
+use mvc\Controllers\ListMovie;
 use mvc\Controllers\Login;
 use mvc\Controllers\Homepage;
 use mvc\Controllers\Register;
 
-session_start();
+
 $method = $_SERVER['REQUEST_METHOD'];
 
     switch ($_SERVER['REQUEST_URI']){
@@ -56,6 +61,35 @@ $method = $_SERVER['REQUEST_METHOD'];
         break;
     case '/cinema_management/':
         header('location: home');
+        break;
+    case '/cinema_management/listmovie':
+        if($method === 'GET'){
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: login');
+            } else{
+                $list = new ListMovie();
+                $list->getListMovie();
+            }
+        }else{
+            echo('404 NOT FOUND');
+            die();
+        }
+        break;
+    case '/cinema_management/addmovie':
+        if($method === 'GET'){
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: login');
+            } else{
+                $add = new AddMovie();
+                $add->getAddMovie();
+            }
+        }elseif($method === 'POST'){
+            $addMovie = new AddMovie();
+            $addMovie ->postAddMovie();
+        } else{
+            echo('404 NOT FOUND');
+            die();
+        }
         break;
 
     default:

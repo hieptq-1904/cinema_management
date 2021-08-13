@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS movies(
     movie_name varchar(255) NOT NULL,
     description varchar(255) NOT NULL,
     image varchar(500) NOT NULL,
-    time time NOT NULL,
+    time int NOT NULL,
     user_id int,
     FOREIGN KEY (user_id) REFERENCES users(id)
     );
