@@ -6,9 +6,8 @@ use mvc\Database\DB;
 class ListMovie
 {
     public function getListMovie(){
-
         require_once 'mvc/Views/ListMovie.php';
-
     }
+
 
 }

@@ -29,8 +29,10 @@ include_once "layout/Sidebar.php";
         <a href="addmovie" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> Add Movie</a>
     </div>
     <span style="color: green"><?php
-        echo $_SESSION['message'][0];
-        unset($_SESSION['message']);
+        if(isset($_SESSION['message'])){
+            echo $_SESSION['message'][0];
+            unset($_SESSION['message']);
+        }
         ?></span>
     <hr>
     <div class="card shadow mb-4">
@@ -38,43 +40,44 @@ include_once "layout/Sidebar.php";
             <h6 class="m-0 font-weight-bold text-primary">List Movie</h6>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                    <tr>
-                        <th width="5%">No</th>
-                        <th width="35%">Movie Name</th>
-                        <th width="25%">Image</th>
-                        <th width="10%">Time</th>
-                        <th width="25%">Option</th>
-                    </tr>
-                    </thead
-                    <tbody>
-                    <?php
-                    $db= new DB();
-                    $listmovie = $db->showMovie();
-                    $db->closeDb();
-                    $no = 1;
-                    foreach ($listmovie as $movie){
-//                        echo $movie->id;
-//                        var_dump($movie);
-//                        die();
-                        echo '<tr>
-                            <td>'.($no++).'</td>
-                            <td>'.$movie->movie_name.'</td>
-                            <td>'.$movie->image.'</td>
-                            <td>'.$movie->time.'</td>
-                            <td><button class="btn " style=" background: #1cc88a; color: white " >Detail</button>
-                                <button class="btn " style="background: #1c294e; color: white ">Edit</button>
-                                <button class="btn " style="background: red; color: white ">Delete</button>
-                            </td>
-                        </tr>';
-                    }
-                    ?>
-                    </tbody>
+            <form action="deletemovie" method="post">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th width="5%">No</th>
+                            <th width="35%">Movie Name</th>
+                            <th width="25%">Image</th>
+                            <th width="10%">Time</th>
+                            <th width="25%">Option</th>
+                        </tr>
+                        </thead
+                        <tbody>
+                        <?php
+                        $db= new DB();
+                        $listmovie = $db->showMovie();
+                        $db->closeDb();
+                        $no = 1;
 
-                </table>
-            </div>
+                        foreach ($listmovie as $movie){
+                            echo '<tr>
+                                <td>'.($no++).'</td>
+                                <td>'.$movie->movie_name.'</td>
+                                <td>'.$movie->image.'</td>
+                                <td>'.$movie->time.'</td>
+                                <td><a href="detailmovie>" name="btn_detail" class="btn " style=" background: #1cc88a; color: white " >Detail</a>
+                                    <a href="editmovie" name="btn_edit" class="btn " style="background: #1c294e; color: white ">Edit</a>
+                                    <button name="btn_delete" value="'.$movie->id.'" class="btn " type="submit"  style="background: red; color: white ">Delete</button>
+                                </td>
+                            </tr>';
+                        }
+                        ?>
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </form>
 
         </div>
     </div>

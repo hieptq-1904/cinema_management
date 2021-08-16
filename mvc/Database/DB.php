@@ -54,7 +54,7 @@ class DB
         if(mysqli_num_rows($result) > 0){
             while ($row = $result->fetch_assoc()){
                 $movie = new Movie($row['id'], $row['movie_name'], $row['description'], $row['image'],$row['time'],
-                    $row['user_id']);
+                    $row['user_id'],);
                 array_push($list, $movie);
             }
             return $list;
@@ -101,8 +101,20 @@ class DB
         }
     }
 
-
-
+    public function deleteMovie($movie_id){
+        $sql = "SELECT * FROM movies WHERE id = '$movie_id' LIMIT 1";
+        $query = $this->conn->query($sql);
+        while ($row = mysqli_fetch_assoc($query)){
+            unlink('public/image/'.$row['image']);
+        }
+        $sql = "DELETE FROM category_movie WHERE movie_id = '$movie_id'";
+        if ($this->conn->query($sql) === TRUE) {
+            $sql_movie = "DELETE FROM movies WHERE id = '$movie_id'";
+            $this->conn->query($sql_movie);
+        } else {
+            return false;
+        }
+    }
 
     public function closeDb(){
         return $this->conn->close();

@@ -4,12 +4,13 @@ include_once 'mvc/Controllers/Homepage.php';
 include 'mvc/Controllers/Register.php';
 include_once 'mvc/Controllers/ListMovie.php';
 include_once 'mvc/Controllers/AddMovie.php';
-
+include_once 'mvc/Controllers/DeleteMovie.php';
 use mvc\Controllers\AddMovie;
 use mvc\Controllers\ListMovie;
 use mvc\Controllers\Login;
 use mvc\Controllers\Homepage;
 use mvc\Controllers\Register;
+use mvc\Controllers\DeleteMovie;
 
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -70,7 +71,8 @@ $method = $_SERVER['REQUEST_METHOD'];
                 $list = new ListMovie();
                 $list->getListMovie();
             }
-        }else{
+        }
+        else{
             echo('404 NOT FOUND');
             die();
         }
@@ -91,7 +93,22 @@ $method = $_SERVER['REQUEST_METHOD'];
             die();
         }
         break;
-
+    case '/cinema_management/deletemovie':
+        if ($method === 'GET') {
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: login');
+            } else{
+                $delete = new DeleteMovie();
+                $delete ->getDelMovie();
+            }
+        }elseif ($method === 'POST'){
+                $deleteMovie = new DeleteMovie();
+                $deleteMovie ->postDelMovie();
+        }else{
+            echo('404 NOT FOUND');
+            die();
+        }
+        break;
     default:
         if (substr($_SERVER['REQUEST_URI'], 0, 7) !== '/public'){
             echo('404 NOT FOUND');
