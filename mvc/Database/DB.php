@@ -104,14 +104,16 @@ class DB
     public function deleteMovie($movie_id){
         $sql = "SELECT * FROM movies WHERE id = '$movie_id' LIMIT 1";
         $query = $this->conn->query($sql);
-        while ($row = mysqli_fetch_assoc($query)){
-            unlink('public/image/'.$row['image']);
-        }
-        $sql = "DELETE FROM category_movie WHERE movie_id = '$movie_id'";
-        if ($this->conn->query($sql) === TRUE) {
-            $sql_movie = "DELETE FROM movies WHERE id = '$movie_id'";
-            $this->conn->query($sql_movie);
-        } else {
+        if($query->num_rows > 0){
+            while ($row = mysqli_fetch_assoc($query)){
+                unlink('public/image/'.$row['image']);
+            }
+            $sql = "DELETE FROM category_movie WHERE movie_id = '$movie_id'";
+            if ($this->conn->query($sql) === TRUE) {
+                $sql_movie = "DELETE FROM movies WHERE id = '$movie_id'";
+                $this->conn->query($sql_movie);
+            }
+        }else{
             return false;
         }
     }

@@ -94,16 +94,13 @@ $method = $_SERVER['REQUEST_METHOD'];
         }
         break;
     case '/cinema_management/deletemovie':
-        if ($method === 'GET') {
+        if ($method === 'POST'){
             if (!isset($_SESSION['user_id'])) {
                 header('Location: login');
-            } else{
-                $delete = new DeleteMovie();
-                $delete ->getDelMovie();
-            }
-        }elseif ($method === 'POST'){
+            }else{
                 $deleteMovie = new DeleteMovie();
                 $deleteMovie ->postDelMovie();
+            }
         }else{
             echo('404 NOT FOUND');
             die();
