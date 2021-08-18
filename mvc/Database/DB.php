@@ -105,18 +105,30 @@ class DB
         $sql = "SELECT * FROM movies WHERE id = '$movie_id' LIMIT 1";
         $query = $this->conn->query($sql);
         if($query->num_rows > 0){
-            while ($row = mysqli_fetch_assoc($query)){
-                unlink('public/image/'.$row['image']);
-            }
+            $row = mysqli_fetch_assoc($query);
+            unlink('public/image/'.$row['image']);
             $sql = "DELETE FROM category_movie WHERE movie_id = '$movie_id'";
             if ($this->conn->query($sql) === TRUE) {
                 $sql_movie = "DELETE FROM movies WHERE id = '$movie_id'";
                 $this->conn->query($sql_movie);
+                return true;
             }
         }else{
             return false;
         }
     }
+
+    public function detailMovie($id){
+        $sql = "SELECT * FROM category_movie WHERE movie_id = '$id'";
+        $result = $this->conn->query($sql);
+        if($result->num_rows > 0){
+            $sql_movie = "SELECT * FROM movies WHERE id = '$id'";
+            $query = $this->conn->query($sql_movie);
+            $row = $query->fetch_assoc();
+
+        }
+    }
+
 
     public function closeDb(){
         return $this->conn->close();

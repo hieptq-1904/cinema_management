@@ -34,6 +34,12 @@ include_once "layout/Sidebar.php";
             unset($_SESSION['message']);
         }
         ?></span>
+    <span style="color: red"><?php
+        if(isset($_SESSION['errors'])){
+            echo $_SESSION['errors'][0];
+            unset($_SESSION['errors']);
+        }
+        ?></span>
     <hr>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -65,7 +71,7 @@ include_once "layout/Sidebar.php";
                                 <td>'.$movie->movie_name.'</td>
                                 <td>'.$movie->image.'</td>
                                 <td>'.$movie->time.'</td>
-                                <td><a href="detailmovie>" name="btn_detail" class="btn " style=" background: #1cc88a; color: white " >Detail</a>
+                                <td><a href="detailmovie?id='.$movie->id.'" id="id_detail"  class="btn " style=" background: #1cc88a; color: white " >Detail</a>
                                     <a href="editmovie" name="btn_edit" class="btn " style="background: #1c294e; color: white ">Edit</a>
                                     <button name="btn_delete" value="'.$movie->id.'" class="btn " type="submit"  style="background: red; color: white ">Delete</button>
                                 </td>

@@ -10,9 +10,15 @@ class DeleteMovie
         if(isset($_POST['btn_delete'])){
             $movie_id = $_POST['btn_delete'];
             $db = new DB();
-            $db->deleteMovie($movie_id);
+            $data = $db->deleteMovie($movie_id);
             $db->closeDb();
-            header('location: listmovie');
+            if($data){
+                header('location: listmovie');
+                $_SESSION['message'] = ['Delete successfully!'];
+            }else{
+                header('location: listmovie');
+                $_SESSION['errors'] = ['Delete unsuccessfully!'];
+            }
         }
     }
 }
