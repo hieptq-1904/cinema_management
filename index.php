@@ -6,6 +6,7 @@ include_once 'mvc/Controllers/ListMovie.php';
 include_once 'mvc/Controllers/AddMovie.php';
 include_once 'mvc/Controllers/DeleteMovie.php';
 include_once 'mvc/Controllers/DetailMovie.php';
+include_once 'mvc/Controllers/UpdateMovie.php';
 use mvc\Controllers\AddMovie;
 use mvc\Controllers\ListMovie;
 use mvc\Controllers\Login;
@@ -13,6 +14,7 @@ use mvc\Controllers\Homepage;
 use mvc\Controllers\Register;
 use mvc\Controllers\DeleteMovie;
 use mvc\Controllers\DetailMovie;
+use mvc\Controllers\UpdateMovie;
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -112,7 +114,8 @@ parse_str($url['query'], $params);
             if (!isset($_SESSION['user_id'])) {
                 header('Location: login');
             }elseif (!isset($params['id'])){
-                return false;
+                header('location:listmovie');
+                $_SESSION['errors'] = ['Id wrong'];
             }else{
                 $detailMovie = new DetailMovie();
                 $detailMovie ->getDetailMovie($params['id']);
@@ -122,6 +125,22 @@ parse_str($url['query'], $params);
             die();
         }
         break;
+        case '/cinema_management/editmovie':
+            if ($method === 'GET'){
+                if (!isset($_SESSION['user_id'])) {
+                    header('Location: login');
+                }elseif (!isset($params['id'])){
+                    header('location:listmovie');
+                    $_SESSION['errors'] = ['Id wrong'];
+                }else{
+                    $updateMovie = new UpdateMovie();
+                    $updateMovie ->getUpdateMovie($params['id']);
+                }
+            }else{
+                echo('404 NOT FOUND');
+                die();
+            }
+            break;
     default:
         if (substr($_SERVER['REQUEST_URI'], 0, 7) !== '/public'){
             echo('404 NOT FOUND');

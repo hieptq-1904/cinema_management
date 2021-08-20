@@ -54,7 +54,7 @@ class DB
         if(mysqli_num_rows($result) > 0){
             while ($row = $result->fetch_assoc()){
                 $movie = new Movie($row['id'], $row['movie_name'], $row['description'], $row['image'],$row['time'],
-                    $row['user_id'],);
+                    $row['user_id']);
                 array_push($list, $movie);
             }
             return $list;
@@ -119,13 +119,29 @@ class DB
     }
 
     public function detailMovie($id){
-        $sql = "SELECT * FROM category_movie WHERE movie_id = '$id'";
+        $sql = "SELECT * FROM movies WHERE id = '$id' LIMIT 1";
         $result = $this->conn->query($sql);
+        $list = [];
         if($result->num_rows > 0){
-            $sql_movie = "SELECT * FROM movies WHERE id = '$id'";
-            $query = $this->conn->query($sql_movie);
-            $row = $query->fetch_assoc();
+            $row = $result->fetch_assoc();
+            $movie = new Movie($row['id'], $row['movie_name'], $row['description'], $row['image'],$row['time'],$row['user_id']);
+            $sql = "SELECT * FROM categories,category_movie WHERE category_movie.movie_id = '$id'AND category_movie.category_id= categories.id LIMIT 1";
+            $qr =$this->conn->query($sql);
+            $row = $qr->fetch_assoc();
+            $categories = new Category( $row['id'], $row['name'], $row['description']);
+            array_push($list,$movie,$categories);
+            return $list;
+        }else{
+            return false;
+        }
+    }
 
+    public function updateMovie($id,$movie_name){
+        $sql = "SELECT * FROM movies WHERE id= '$id'";
+        $result = $this->conn->query($sql);
+        if($result->num_rows>0){
+            $sql = "UPDATE movies SET movie_name = '$movie_name' ";
+            $this->conn->query($sql);
         }
     }
 
