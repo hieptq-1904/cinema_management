@@ -4,8 +4,10 @@ use mvc\Models\CategoryMovie;
 use mysqli;
 use mvc\Models\Movie;
 use mvc\Models\Category;
+use mvc\Models\Room;
 require_once 'mvc/Models/Movie.php';
 require_once 'mvc/Models/Category.php';
+require_once 'mvc/Models/Room.php';
 
 class DB
 {
@@ -79,26 +81,31 @@ class DB
         }
     }
 
-
     public function addMovie($id_category,$movie_name,$description,$image,$time){
         $user_id = $_SESSION['user_id'];
-        $sql_category = "SELECT id FROM categories WHERE id = '$id_category'";
+        $list =  implode(", ", $id_category);
+        $sql_category = "SELECT id FROM categories WHERE id in ($list)";
         $result= $this->conn->query($sql_category);
-        if($result->num_rows >0){
-            $category_id = $result->fetch_assoc();
-            $id_cate = reset($category_id);
-        }
-        $sql_movie = "INSERT INTO movies(movie_name, description, image, time, user_id) 
+        if($result->num_rows > 0){
+            $sql_movie = "INSERT INTO movies(movie_name, description, image, time, user_id) 
                         VALUES ('$movie_name', '$description', '$image', '$time', '$user_id')";
-        if ($this->conn->query($sql_movie) === TRUE) {
-            $movie_id = $this->conn->insert_id;;
-            $sql_cate = "INSERT INTO category_movie(movie_id, category_id) VALUES ('$movie_id', '$id_cate')";
-            if($this->conn->query($sql_cate) === TRUE){
-                return true;
+            if ($this->conn->query($sql_movie) === true) {
+                $movie_id = $this->conn->insert_id;
+                while($row= $result->fetch_assoc()){
+                    $id_cate = $row['id'];
+                    $sql_cate = "INSERT INTO category_movie(movie_id, category_id) VALUES ($movie_id, $id_cate)";
+                    $qr = $this->conn->query($sql_cate);
+                    if(!$qr){
+                        return false;
+                    }
+                }
+            }else {
+                return false;
             }
-        }else {
+        }else{
             return false;
         }
+
     }
 
     public function deleteMovie($movie_id){
@@ -123,26 +130,84 @@ class DB
         $result = $this->conn->query($sql);
         $list = [];
         if($result->num_rows > 0){
-            $row = $result->fetch_assoc();
-            $movie = new Movie($row['id'], $row['movie_name'], $row['description'], $row['image'],$row['time'],$row['user_id']);
-            $sql = "SELECT * FROM categories,category_movie WHERE category_movie.movie_id = '$id'AND category_movie.category_id= categories.id LIMIT 1";
+            $sql = "SELECT * FROM categories,category_movie WHERE category_movie.movie_id = '$id'AND category_movie.category_id= categories.id";
             $qr =$this->conn->query($sql);
-            $row = $qr->fetch_assoc();
-            $categories = new Category( $row['id'], $row['name'], $row['description']);
-            array_push($list,$movie,$categories);
+            while ($row = $qr->fetch_assoc()){
+                $categories = new Category( $row['id'], $row['name'], $row['description']);
+                array_push($list,$categories);
+            }
+            $row = $result->fetch_assoc();
+            $movie = new Movie($row['id'], $row['movie_name'], $row['description'], $row['image'],$row['time'],$row['user_id'],$list);
+            return $movie;
+        }else{
+            return false;
+        }
+    }
+
+    public function updateMovie($id,$id_category,$movie_name,$description,$file, $time){
+        $user_id = $_SESSION['user_id'];
+        $sql = "SELECT * FROM movies WHERE id = '$id' LIMIT 1";
+        $result = $this->conn->query($sql);
+        if($result->num_rows > 0){
+            if ($file != '') {
+                $sql_movie = "UPDATE movies SET movie_name = '$movie_name', description = '$description', image='$file', 
+                    time = '$time', user_id = '$user_id' WHERE id = '$id' ";
+            } else {
+                $sql_movie = "UPDATE movies SET movie_name = '$movie_name', description = '$description',
+                    time = '$time', user_id = '$user_id' WHERE id = '$id' ";
+            }
+            $qr = $this->conn->query($sql_movie);
+            if($qr == true){
+                if ($id_category) {
+                    $sql = "DELETE FROM category_movie WHERE movie_id = '$id'";
+                    $this->conn->query($sql);
+                    $list =  str_replace(" ", "", implode(", ", $id_category));
+                    $sql_category = "SELECT id FROM categories WHERE id in ($list)";
+                    $result2 = $this->conn->query($sql_category);
+                    if($result2->num_rows > 0){
+                        while ($row = $result2->fetch_assoc()){
+                            $id_cate = $row['id'];
+                            $sql_cate = "INSERT INTO category_movie(movie_id, category_id) VALUES ($id, $id_cate)";
+                            $this->conn->query($sql_cate);
+                        }
+                    }
+                }
+
+            }
+        }
+        return true;
+    }
+
+    public function showRoom(){
+        $sql = "SELECT * FROM rooms";
+        $result = mysqli_query($this->conn,$sql);
+        $list = [];
+        if(mysqli_num_rows($result) >0){
+            while ($row = $result->fetch_assoc()){
+                $room = new Room($row['id'], $row['room_name'], $row['number_of_seats'],$row['row_of_seats']  );
+                array_push($list,$room);
+            }
             return $list;
         }else{
             return false;
         }
     }
 
-    public function updateMovie($id,$movie_name){
-        $sql = "SELECT * FROM movies WHERE id= '$id'";
-        $result = $this->conn->query($sql);
-        if($result->num_rows>0){
-            $sql = "UPDATE movies SET movie_name = '$movie_name' ";
-            $this->conn->query($sql);
+    public function setMovieSchedule($start_time,$end_time,$date,$movie_id,$room_id){
+        $sql_room = "SELECT id FROM rooms WHERE id = '$room_id'";
+        $query = $this->conn->query($sql_room);
+        if($query->num_rows > 0){
+            $id_room = $query->fetch_assoc();
         }
+        $sql_movie = "SELECT id FROM movies WHERE id = '$movie_id' ";
+        $qr = $this->conn->query($sql_movie);
+        if($qr->num_rows > 0){
+            $id_movie = $qr->fetch_assoc();
+            $sql = "INSERT INTO movie_schedule(start_time,end_time,date,movie_id,room_id) 
+                    VALUES($start_time,$end_time, $date,$id_movie,$id_room) ";
+            $result = $this->conn->query($sql);
+        }
+
     }
 
 

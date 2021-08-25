@@ -2,8 +2,6 @@
 include_once ('mvc/Database/DB.php');
 use mvc\Database\DB;
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,8 +39,7 @@ include_once "layout/Sidebar.php";
                             </div>
                             <div class="form-group">
                                 <label for="">Categories: </label>
-                                <select name="category_id" id="input" class="form-control" required="required">
-
+                                <select name="category_id[]" multiple="multiple" id="input1" class="form-control" ">
                                 <?php
                                 $db = new DB();
                                 $listcate = $db->showCategory();
