@@ -69,16 +69,15 @@ include_once "layout/Sidebar.php";
                             echo '<tr>
                                 <td>'.($no++).'</td>
                                 <td>'.$movie->movie_name.'</td>
-                                <td>'.$movie->image.'</td>
+                                <td> <img src="public/image/'.$movie->image.'" width="80px"> </td>
                                 <td>'.$movie->time.'</td>
-                                <td><a href="detailmovie?id='.$movie->id.'" id="id_detail"  class="btn " style=" background: #1cc88a; color: white " >Detail</a>
-                                    <a href="editmovie" name="btn_edit" class="btn " style="background: #1c294e; color: white ">Edit</a>
+                                <td><a href="detailmovie?id='.$movie->id.'" class="btn " style=" background: #1cc88a; color: white " >Detail</a>
+                                    <a href="editmovie?id='.$movie->id.'" class="btn " style="background: #1c294e; color: white ">Edit</a>
                                     <button name="btn_delete" value="'.$movie->id.'" class="btn " type="submit"  style="background: red; color: white ">Delete</button>
                                 </td>
                             </tr>';
                         }
                         ?>
-
                         </tbody>
 
                     </table>

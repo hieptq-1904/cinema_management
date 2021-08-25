@@ -1,12 +1,14 @@
 <?php
 require_once 'mvc/Controllers/Login.php';
 include_once 'mvc/Controllers/Homepage.php';
-include 'mvc/Controllers/Register.php';
+include_once 'mvc/Controllers/Register.php';
 include_once 'mvc/Controllers/ListMovie.php';
 include_once 'mvc/Controllers/AddMovie.php';
 include_once 'mvc/Controllers/DeleteMovie.php';
 include_once 'mvc/Controllers/DetailMovie.php';
 include_once 'mvc/Controllers/UpdateMovie.php';
+include_once 'mvc/Controllers/MovieSchedule.php';
+include_once 'mvc/Controllers/SetMovieSchedule.php';
 use mvc\Controllers\AddMovie;
 use mvc\Controllers\ListMovie;
 use mvc\Controllers\Login;
@@ -15,6 +17,8 @@ use mvc\Controllers\Register;
 use mvc\Controllers\DeleteMovie;
 use mvc\Controllers\DetailMovie;
 use mvc\Controllers\UpdateMovie;
+use mvc\Controllers\MovieSchedule;
+use mvc\Controllers\SetMovieSchedule;
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -38,6 +42,18 @@ parse_str($url['query'], $params);
             die();
         }
         break;
+    case '/cinema_management/logout':
+        if($method === 'GET'){
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: login');
+            }else{
+                unset($_SESSION['user_id']);
+                session_destroy();
+                header('location: login');
+            }
+        }
+        break;
+
     case '/cinema_management/register':
         if($method === 'GET'){
             $register = new Register();
@@ -113,12 +129,14 @@ parse_str($url['query'], $params);
         if ($method === 'GET'){
             if (!isset($_SESSION['user_id'])) {
                 header('Location: login');
-            }elseif (!isset($params['id'])){
-                header('location:listmovie');
-                $_SESSION['errors'] = ['Id wrong'];
             }else{
-                $detailMovie = new DetailMovie();
-                $detailMovie ->getDetailMovie($params['id']);
+                if (!isset($params['id'])){
+                    echo('404 NOT FOUND');
+                    die();
+                }else{
+                    $detailMovie = new DetailMovie();
+                    $detailMovie ->getDetailMovie($params['id']);
+                }
             }
         }else{
             echo('404 NOT FOUND');
@@ -136,7 +154,47 @@ parse_str($url['query'], $params);
                     $updateMovie = new UpdateMovie();
                     $updateMovie ->getUpdateMovie($params['id']);
                 }
+            }elseif ($method === 'POST'){
+                if (!isset($_SESSION['user_id'])) {
+                    header('Location: login');
+                }elseif (!isset($params['id'])){
+                    echo '404 NOT FOUND';
+                    die();
+                }else{
+                    $update = new UpdateMovie();
+                    $update ->postUpdateMovie($params['id']);
+                }
             }else{
+                echo('404 NOT FOUND');
+                die();
+            }
+            break;
+        case '/cinema_management/movieschedule':
+            if($method === 'GET'){
+                if (!isset($_SESSION['user_id'])) {
+                    header('Location: login');
+                } else{
+                    $list = new MovieSchedule();
+                    $list->getMovieSchedule();
+                }
+            }
+            else{
+                echo('404 NOT FOUND');
+                die();
+            }
+            break;
+        case '/cinema_management/setmovieschedule':
+            if($method === 'GET'){
+                if (!isset($_SESSION['user_id'])) {
+                    header('Location: login');
+                } else{
+                    $setmovie = new SetMovieSchedule();
+                    $setmovie->getSetMovieSchedule();
+                }
+            }elseif($method === 'POST'){
+                $setMovieSchedule = new SetMovieSchedule();
+                $setMovieSchedule ->postSetMovieSchedule();
+            } else{
                 echo('404 NOT FOUND');
                 die();
             }
