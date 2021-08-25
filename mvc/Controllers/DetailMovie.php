@@ -10,7 +10,11 @@ class DetailMovie
     public function getDetailMovie($id){
         $db = new DB();
         $data = $db->detailMovie($id);
-        $db->closeDb();
-        require_once 'mvc/Views/DetailMovie.php';
+        if($data){
+            require_once 'mvc/Views/DetailMovie.php';
+        }else{
+            echo '404 NOT FOUND';
+            die();
+        }
     }
 }

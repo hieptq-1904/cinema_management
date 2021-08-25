@@ -29,32 +29,28 @@ include_once "layout/Sidebar.php";
             <div class="col-md-9">
                 <div class="panel panel-info">
                     <div class="panel-body">
-<!--                        --><?php
-//                        var_dump($data);
-//                        ?>
-                        <?php foreach ($data as $movie){?>
                         <form action="" method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="">Movie name: </label>
-                                <?php echo $movie->movie_name ?>
+                                <?php echo $data->movie_name ?>
                             </div>
                             <div class="form-group">
                                 <label for="">Categories: </label>
-                                <?php foreach ($data as $categories){
-                                    echo $categories->name;
+                                <?php foreach ($data->categories as $category){
+                                    echo $category->name.',';
                                 } ?>
                             </div>
                             <div class="form-group">
                                 <label for="">Image: </label><br>
-                                <img src="public/image/<?php echo $movie->image ?> " width="300px" ">
+                                <img src="public/image/<?php echo $data->image ?> " width="300px" ">
                             </div>
                             <div class="form-group">
                                 <label for="">Description: </label>
-                                <?php echo $movie->description ?>
+                                <?php echo $data->description ?>
                             </div>
                             <div class="form-group">
                                 <label for="">Time(minutes): </label>
-                                <?php echo $movie->time ?>
+                                <?php echo $data->time ?>
                             </div>
                             <div class="form-group" style="text-align: end;">
                                 <a class="btn btn-danger" href="listmovie"
@@ -62,7 +58,7 @@ include_once "layout/Sidebar.php";
                             </div>
                         </form>
 
-                        <?php break; } ?>
+
                     </div>
                 </div>
             </div>
