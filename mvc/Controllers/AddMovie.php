@@ -1,7 +1,6 @@
 <?php
 
 namespace mvc\Controllers;
-session_start();
 require_once 'mvc/Database/DB.php';
 use mvc\Database\DB;
 
@@ -11,10 +10,11 @@ class AddMovie
         require_once 'mvc/Views/AddMovie.php';
     }
     public function postAddMovie(){
+
         $db= new DB();
         if($_POST['moviename'] != '' && $_POST['description'] != ''
-            && $_POST['time'] != ''&& $_POST['category_id'] != ''&& $_FILES['image'] != ''){
-            if($_POST['time'] <= 0){
+            && $_POST['category_id'] != ''&& $_FILES['image'] != ''){
+            if($_POST['time'] <= 0 ||$_POST['time']>150){
                 $_SESSION['errors'] = ['Time wrong!'];
                 header('location: addmovie');
             }else{
@@ -34,6 +34,11 @@ class AddMovie
                     $_SESSION['errors'] = ['File is not an image'];
                 }
 
+                elseif (file_exists($target_file)) {
+                    header('location: addmovie');
+                    $_SESSION['errors'] =  ['Sorry, file already exists.'];
+                }
+
                 elseif ($_FILES["image"]["size"] > 2097152) {
                     header('location: addmovie');
                     $_SESSION['errors'] = ['Sorry, your file is too large!'];
@@ -47,7 +52,8 @@ class AddMovie
                 else{
                 move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
                     $data = $db->addMovie($id_category, $movie_name, $description, $_FILES["image"]["name"], $time);
-                    if($data){
+                    $db->closeDb();
+                    if(!$data){
                         header('location: listmovie');
                         $_SESSION['message'] = ['Add movie successfully!'];
                     }

@@ -36,10 +36,11 @@ CREATE TABLE rooms(
 
 CREATE TABLE movie_schedule(
     id int PRIMARY KEY AUTO_INCREMENT,
-    time time NOT NULL,
+    start_time time NOT NULL,
+    end_time time NOT NULL,
     date date NOT NULL,
-    movie_id int,
-    room_id int,
+    movie_id int NOT NULL,
+    room_id int NOT NULL,
     FOREIGN KEY(movie_id) REFERENCES movies(id),
     FOREIGN KEY(room_id) REFERENCES rooms(id)
 );

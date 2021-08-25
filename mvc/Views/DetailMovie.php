@@ -1,14 +1,11 @@
-<?php
-include_once ('mvc/Database/DB.php');
-use mvc\Database\DB;
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <?php
     include_once "layout/head.php";
     ?>
-    <title>Add Movie</title>
+    <title>Detail Movie</title>
 </head>
 <body id="page-top">
 
@@ -20,7 +17,7 @@ include_once "layout/Sidebar.php";
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Add movie for Cinema Management </h1>
+        <h1 class="h3 mb-0 text-gray-800">Detail movie for Cinema Management </h1>
     </div>
     <span style="color: red"><?php
         echo $_SESSION['errors'][0];
@@ -32,44 +29,40 @@ include_once "layout/Sidebar.php";
             <div class="col-md-9">
                 <div class="panel panel-info">
                     <div class="panel-body">
+<!--                        --><?php
+//                        var_dump($data);
+//                        ?>
+                        <?php foreach ($data as $movie){?>
                         <form action="" method="post" role="form" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="">Movie name: </label>
-                                <input type="text" class="form-control" name="moviename">
+                                <?php echo $movie->movie_name ?>
                             </div>
                             <div class="form-group">
                                 <label for="">Categories: </label>
-                                <select name="category_id[]" multiple="multiple" id="input1" class="form-control" ">
-                                <?php
-                                $db = new DB();
-                                $listcate = $db->showCategory();
-                                $db->closeDb();
-                                foreach ($listcate as $category ){?>
-                                    <option value="<?php echo $category->id?>"><?php echo $category->name?></option>
-                                <?php } ?>
-
-                                </select>
+                                <?php foreach ($data as $categories){
+                                    echo $categories->name;
+                                } ?>
                             </div>
                             <div class="form-group">
-                                <label for="">Image: </label>
-                                <input type="file" class="form-control" name="image" >
+                                <label for="">Image: </label><br>
+                                <img src="public/image/<?php echo $movie->image ?> " width="300px" ">
                             </div>
                             <div class="form-group">
                                 <label for="">Description: </label>
-                                <textarea name="description" id="input" class="form-control" rows="3"
-                                ></textarea>
+                                <?php echo $movie->description ?>
                             </div>
                             <div class="form-group">
                                 <label for="">Time(minutes): </label>
-                                <input type="number" class="form-control" name="time"  >
+                                <?php echo $movie->time ?>
                             </div>
-                            <div class="form-group" style="text-align: center;">
-                                <button class="btn btn-danger"  style="width: 100px; background:dodgerblue "
-                                name="btn_add">Add</button>
+                            <div class="form-group" style="text-align: end;">
                                 <a class="btn btn-danger" href="listmovie"
-                                        style="width: 100px;background: dodgerblue; margin-left: 100px">Cancel</a>
+                                   style="width: 100px;background: dodgerblue; margin-left: 100px">Cancel</a>
                             </div>
                         </form>
+
+                        <?php break; } ?>
                     </div>
                 </div>
             </div>
