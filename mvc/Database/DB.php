@@ -193,24 +193,6 @@ class DB
         }
     }
 
-    public function setMovieSchedule($start_time,$end_time,$date,$movie_id,$room_id){
-        $sql_room = "SELECT id FROM rooms WHERE id = '$room_id'";
-        $query = $this->conn->query($sql_room);
-        if($query->num_rows > 0){
-            $id_room = $query->fetch_assoc();
-        }
-        $sql_movie = "SELECT id FROM movies WHERE id = '$movie_id' ";
-        $qr = $this->conn->query($sql_movie);
-        if($qr->num_rows > 0){
-            $id_movie = $qr->fetch_assoc();
-            $sql = "INSERT INTO movie_schedule(start_time,end_time,date,movie_id,room_id) 
-                    VALUES($start_time,$end_time, $date,$id_movie,$id_room) ";
-            $result = $this->conn->query($sql);
-        }
-
-    }
-
-
     public function closeDb(){
         return $this->conn->close();
     }
